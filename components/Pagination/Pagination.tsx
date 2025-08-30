@@ -1,5 +1,5 @@
-import ReactPaginate from 'react-paginate';
-import css from './Pagination.module.css';
+import ReactPaginate from "react-paginate";
+import css from "./Pagination.module.css";
 
 interface PaginationProps {
   currentPage: number;
@@ -27,8 +27,8 @@ export default function Pagination({
       onPageChange={handlePageClick}
       containerClassName={css.pagination}
       activeClassName={css.active}
-      previousLabel={'←'}
-      nextLabel={'→'}
+      previousLabel={"←"}
+      nextLabel={"→"}
       disabledClassName={css.disabled}
     />
   );

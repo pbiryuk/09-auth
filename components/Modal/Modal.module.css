@@ -20,19 +20,3 @@
   position: relative;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 }
-
-.closeBtn {
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  background: transparent;
-  border: none;
-  font-size: 24px;
-  cursor: pointer;
-  line-height: 1;
-  color: #333;
-}
-
-.closeBtn:hover {
-  color: #000;
-}

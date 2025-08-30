@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { deleteNote } from '@/lib/api';
-import type { Note } from '@/types/note';
-import Link from 'next/link';
-import css from './NoteList.module.css';
+import css from "./NoteList.module.css";
+import type { Note } from "@/types/note";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import Link from "next/link";
+import { deleteNote } from "@/lib/api/clientApi";
 
 interface NoteListProps {
   notes: Note[];
@@ -14,10 +14,10 @@ interface NoteListProps {
 export default function NoteList({ notes, onNoteClick }: NoteListProps) {
   const queryClient = useQueryClient();
 
-  const deleteMutation = useMutation<Note, Error, string>({
-    mutationFn: (id: string) => deleteNote(id),
+  const deleteNoteMutation = useMutation({
+    mutationFn: (noteId: string) => deleteNote(noteId),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['notes'] });
+      queryClient.invalidateQueries({ queryKey: ["notes"] });
     },
   });
 
@@ -25,27 +25,25 @@ export default function NoteList({ notes, onNoteClick }: NoteListProps) {
 
   return (
     <ul className={css.list}>
-      {notes.map(({ id, title, content, tag }) => (
-        <li key={id} className={css.listItem}>
-          <h2 className={css.title} onClick={() => onNoteClick?.(id)}>
-            {title}
+      {notes.map((note) => (
+        <li className={css.listItem} key={note.id}>
+          <h2 className={css.title} onClick={() => onNoteClick?.(note.id)}>
+            {note.title}
           </h2>
-          <p className={css.content} onClick={() => onNoteClick?.(id)}>
-            {content}
+          <p className={css.content} onClick={() => onNoteClick?.(note.id)}>
+            {note.content}
           </p>
           <div className={css.footer}>
-            <span className={css.tag}>{tag}</span>
-            <div style={{ display: 'flex', gap: '8px' }}>
-              <Link href={`/notes/${id}`} className={css.link}>
-                View details
-              </Link>
-              <button
-                className={css.button}
-                onClick={() => deleteMutation.mutate(id.toString())}
-              >
-                {deleteMutation.isPending ? 'Deleting...' : 'Delete'}
-              </button>
-            </div>
+            <span className={css.tag}>{note.tag}</span>
+            <Link className={css.link} href={`/notes/${note.id}`}>
+              View details
+            </Link>
+            <button
+              className={css.button}
+              onClick={() => deleteNoteMutation.mutate(note.id)}
+            >
+              {deleteNoteMutation.isPending ? "Deleting..." : "Delete"}
+            </button>
           </div>
         </li>
       ))}
