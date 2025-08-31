@@ -4,7 +4,6 @@ import { cookies } from "next/headers";
 import { NotesHttpResponse } from "./clientApi";
 import { Note, NoteTag } from "@/types/note";
 
-// --- User / Auth ---
 export const getServerMe = async (): Promise<User> => {
   const cookieStore = cookies();
   const response = await api.get<User>("/users/me", {
@@ -13,15 +12,16 @@ export const getServerMe = async (): Promise<User> => {
   return response.data;
 };
 
-export const checkServerSession = async (): Promise<boolean> => {
-  const cookieStore = cookies();
-  const response = await api.get<{ success: boolean }>("/auth/session", {
-    headers: { Cookie: cookieStore.toString() },
+export const checkServerSession = async () => {
+  const cookieStore = await cookies();
+  const res = await api.get("/auth/session", {
+    headers: {
+      Cookie: cookieStore.toString(),
+    },
   });
-  return response.data.success;
+  return res;
 };
 
-// --- Notes ---
 export const fetchServerNotes = async (
   search: string = "",
   page: number = 1,
